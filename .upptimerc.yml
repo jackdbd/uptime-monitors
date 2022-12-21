@@ -8,11 +8,6 @@ sites:
     method: GET
     assignees:
       - jackdbd
-  - name: POST to Test Broken Site
-    url: https://thissitedoesnotexist.koj.co
-    method: POST
-    assignees:
-      - jackdbd
 
 status-website:
   # Add your custom domain name, or remove the `cname` line if you don't have a domain
@@ -30,4 +25,4 @@ status-website:
       href: /
     - title: GitHub
       href: https://github.com/$OWNER/$REPO
-  theme: night
+  theme: light
