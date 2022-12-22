@@ -6,6 +6,8 @@ on:
     # https://crontab.guru/
     - cron:  '*/5 * * * *'
     # - cron:  '55 20 * * *'
+  workflow_dispatch:
+  # gh workflow run "Send recap to Telegram"
 
     # https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json
 
@@ -19,6 +21,7 @@ jobs:
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json'
+          # url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/api/giacomo-debidda/response-time-day.json'
           method: 'GET'
 
       - name: Show Response
@@ -26,6 +29,8 @@ jobs:
           echo ${{ steps.myRequest.outputs.response }}
           echo ${{ steps.myRequest.outputs.headers }}
           echo "body is ${{ fromJson(steps.myRequest.outputs.response).body }}"
+          echo "label: ${{ fromJson(steps.myRequest.outputs.response).body.label }}"
+          echo "ms ${{ fromJson(steps.myRequest.outputs.response).body.message }}"
 
       - name: 💬 send uptime recap to Telegram chat
         # https://github.com/appleboy/telegram-action
