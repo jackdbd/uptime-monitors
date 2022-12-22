@@ -1,0 +1,52 @@
+name: 'Send recap to Telegram'
+
+on:
+  schedule:
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+    # https://crontab.guru/
+    - cron:  '*/5 * * * *'
+    # - cron:  '55 20 * * *'
+
+    # https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json
+
+jobs:
+  send-recap-to-telegram-chat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: HTTP Request Action
+        id: myRequest
+        # https://github.com/marketplace/actions/http-request-action
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json'
+          method: 'GET'
+
+      - name: Show Response
+        run: |
+          echo ${{ steps.myRequest.outputs.response }}
+          echo ${{ steps.myRequest.outputs.headers }}
+          echo "body is ${{ fromJson(steps.myRequest.outputs.response).body }}"
+
+      - name: 💬 send uptime recap to Telegram chat
+        # https://github.com/appleboy/telegram-action
+        uses: appleboy/telegram-action@v0.1.1
+        # This is a container action, so it must run on Linux (it would fail if
+        # `runs-on` is either `windows-latest` or `macOS-latest`)
+        # https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action#introduction
+        # https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson
+        with:
+          to: ${{ secrets.NOTIFICATION_TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.NOTIFICATION_TELEGRAM_BOT_KEY }}
+          format: html
+          disable_web_page_preview: false
+          # https://core.telegram.org/bots/api#formatting-options
+          message: |
+            <b>🆙 ⬆️ 📊 Uptime Monitoring recap</b>
+
+            <a href="https://status.giacomodebidda.com/history/giacomo-debidda">History</a>
+
+            Repository: <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
+
+            Workflow: <a href="${{ github.event.workflow_run.html_url }}">${{ github.event.workflow_run.name }}</a>
+
+# ${{ steps.myRequest.outputs.response }}
