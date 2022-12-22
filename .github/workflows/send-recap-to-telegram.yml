@@ -60,8 +60,10 @@ jobs:
 
             GitHub workflow triggered in repository <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
 
+            <b>giacomodebidda.com</b>
             ${{ fromJson(steps.response_time_day.outputs.response).label }}: ${{ fromJson(steps.response_time_day.outputs.response).message }}
             ${{ fromJson(steps.response_time_week.outputs.response).label }}: ${{ fromJson(steps.response_time_week.outputs.response).message }}
             ${{ fromJson(steps.uptime_month.outputs.response).label }}: ${{ fromJson(steps.uptime_month.outputs.response).message }}
-
             <a href="https://status.giacomodebidda.com/history/giacomo-debidda">History</a>
+
+            <b>TODO: other sites/pages</b>
