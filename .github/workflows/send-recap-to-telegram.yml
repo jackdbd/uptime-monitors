@@ -51,17 +51,17 @@ jobs:
           to: ${{ secrets.NOTIFICATION_TELEGRAM_CHAT_ID }}
           token: ${{ secrets.NOTIFICATION_TELEGRAM_BOT_KEY }}
           format: html
-          disable_web_page_preview: false
+          disable_notification: true
+          # The Upptime history page contains a <canvas>, and Telegram link unfurling is not able to show it.
+          disable_web_page_preview: true
           # https://core.telegram.org/bots/api#formatting-options
           message: |
             <b>📊 Uptime Monitoring recap</b>
 
+            GitHub workflow triggered in repository <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
+
             ${{ fromJson(steps.response_time_day.outputs.response).label }}: ${{ fromJson(steps.response_time_day.outputs.response).message }}
-
             ${{ fromJson(steps.response_time_week.outputs.response).label }}: ${{ fromJson(steps.response_time_week.outputs.response).message }}
-
             ${{ fromJson(steps.uptime_month.outputs.response).label }}: ${{ fromJson(steps.uptime_month.outputs.response).message }}
-
-            Repository: <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
 
             <a href="https://status.giacomodebidda.com/history/giacomo-debidda">History</a>
