@@ -20,17 +20,19 @@ jobs:
         # https://github.com/marketplace/actions/http-request-action
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json'
-          # url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/api/giacomo-debidda/response-time-day.json'
+          # url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json'
+          url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/api/giacomo-debidda/response-time-day.json'
           method: 'GET'
+
+      - name: Show HTTP response headers
+        run: echo ${{ steps.myRequest.outputs.headers }}
 
       - name: Show Response
         run: |
           echo ${{ steps.myRequest.outputs.response }}
-          echo ${{ steps.myRequest.outputs.headers }}
-          echo "body is ${{ fromJson(steps.myRequest.outputs.response).body }}"
-          echo "label: ${{ fromJson(steps.myRequest.outputs.response).body.label }}"
-          echo "ms ${{ fromJson(steps.myRequest.outputs.response).body.message }}"
+          echo "body is ${{ fromJson(steps.myRequest.outputs.response) }}"
+          echo "label: ${{ fromJson(steps.myRequest.outputs.response).label }}"
+          echo "ms ${{ fromJson(steps.myRequest.outputs.response).message }}"
 
       - name: 💬 send uptime recap to Telegram chat
         # https://github.com/appleboy/telegram-action
@@ -46,12 +48,10 @@ jobs:
           disable_web_page_preview: false
           # https://core.telegram.org/bots/api#formatting-options
           message: |
-            <b>🆙 ⬆️ 📊 Uptime Monitoring recap</b>
+            <b>📊 Uptime Monitoring recap</b>
+
+            ${{ fromJson(steps.myRequest.outputs.response).label }}: ${{ fromJson(steps.myRequest.outputs.response).message }}
 
             <a href="https://status.giacomodebidda.com/history/giacomo-debidda">History</a>
 
             Repository: <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
-
-            Workflow: <a href="${{ github.event.workflow_run.html_url }}">${{ github.event.workflow_run.name }}</a>
-
-# ${{ steps.myRequest.outputs.response }}
