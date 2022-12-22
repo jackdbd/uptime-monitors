@@ -60,7 +60,7 @@ jobs:
 
             ${{ fromJson(steps.response_time_week.outputs.response).label }}: ${{ fromJson(steps.response_time_week.outputs.response).message }}
 
-            ${{ fromJson(steps.response_uptime_month.outputs.response).label }}: ${{ fromJson(steps.response_uptime_month.outputs.response).message }}
+            ${{ fromJson(steps.uptime_month.outputs.response).label }}: ${{ fromJson(steps.uptime_month.outputs.response).message }}
 
             Repository: <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
 
