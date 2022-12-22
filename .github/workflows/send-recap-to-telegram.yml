@@ -4,19 +4,17 @@ on:
   schedule:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
     # https://crontab.guru/
-    - cron:  '*/5 * * * *'
-    # - cron:  '55 20 * * *'
+    - cron:  '55 20 * * *'
   workflow_dispatch:
-  # gh workflow run "Send recap to Telegram"
-
-    # https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/history/summary.json
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
+    # trigger this workflow manually using the GitHub CLI:
+    # gh workflow run "Send recap to Telegram"
 
 jobs:
   send-recap-to-telegram-chat:
     runs-on: ubuntu-latest
     steps:
-      - name: HTTP Request Action
-        id: myRequest
+      - id: response_time_day
         # https://github.com/marketplace/actions/http-request-action
         uses: fjogeleit/http-request-action@v1
         with:
@@ -24,15 +22,22 @@ jobs:
           url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/api/giacomo-debidda/response-time-day.json'
           method: 'GET'
 
-      - name: Show HTTP response headers
-        run: echo ${{ steps.myRequest.outputs.headers }}
+      - id: response_time_week
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/api/giacomo-debidda/response-time-week.json'
 
-      - name: Show Response
-        run: |
-          echo ${{ steps.myRequest.outputs.response }}
-          echo "body is ${{ fromJson(steps.myRequest.outputs.response) }}"
-          echo "label: ${{ fromJson(steps.myRequest.outputs.response).label }}"
-          echo "ms ${{ fromJson(steps.myRequest.outputs.response).message }}"
+      - id: uptime_month
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://raw.githubusercontent.com/jackdbd/uptime-monitors/main/api/giacomo-debidda/uptime-month.json'
+
+      # - name: Show HTTP response headers
+      #   run: echo ${{ steps.response_time_day.outputs.headers }}
+
+      # - name: Show Response
+      #   run: |
+      #     echo ${{ steps.response_time_day.outputs.response }}
 
       - name: 💬 send uptime recap to Telegram chat
         # https://github.com/appleboy/telegram-action
@@ -40,7 +45,6 @@ jobs:
         # This is a container action, so it must run on Linux (it would fail if
         # `runs-on` is either `windows-latest` or `macOS-latest`)
         # https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action#introduction
-        # https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson
         with:
           to: ${{ secrets.NOTIFICATION_TELEGRAM_CHAT_ID }}
           token: ${{ secrets.NOTIFICATION_TELEGRAM_BOT_KEY }}
@@ -50,8 +54,12 @@ jobs:
           message: |
             <b>📊 Uptime Monitoring recap</b>
 
-            ${{ fromJson(steps.myRequest.outputs.response).label }}: ${{ fromJson(steps.myRequest.outputs.response).message }}
+            ${{ fromJson(steps.response_time_day.outputs.response).label }}: ${{ fromJson(steps.response_time_day.outputs.response).message }}
 
-            <a href="https://status.giacomodebidda.com/history/giacomo-debidda">History</a>
+            ${{ fromJson(steps.response_time_week.outputs.response).label }}: ${{ fromJson(steps.response_time_week.outputs.response).message }}
+
+            ${{ fromJson(steps.response_uptime_month.outputs.response).label }}: ${{ fromJson(steps.response_uptime_month.outputs.response).message }}
 
             Repository: <a href="${{ github.event.repository.html_url }}">${{ github.event.repository.full_name }}</a>
+
+            <a href="https://status.giacomodebidda.com/history/giacomo-debidda">History</a>
