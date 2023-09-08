@@ -6,9 +6,9 @@
     "slug": "giacomo-debidda",
     "status": "up",
     "uptime": "99.99%",
-    "uptimeDay": "96.09%",
-    "uptimeWeek": "99.44%",
-    "uptimeMonth": "99.87%",
+    "uptimeDay": "96.78%",
+    "uptimeWeek": "99.54%",
+    "uptimeMonth": "99.89%",
     "uptimeYear": "99.99%",
     "time": 149,
     "timeDay": 165,
@@ -16,7 +16,7 @@
     "timeMonth": 160,
     "timeYear": 149,
     "dailyMinutesDown": {
-      "2023-09-08": 56
+      "2023-09-08": 46
     }
   }
 ]
