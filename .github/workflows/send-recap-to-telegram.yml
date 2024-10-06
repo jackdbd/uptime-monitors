@@ -48,8 +48,8 @@ jobs:
         # `runs-on` is either `windows-latest` or `macOS-latest`)
         # https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action#introduction
         with:
-          to: ${{ secrets.NOTIFICATION_TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.NOTIFICATION_TELEGRAM_BOT_KEY }}
+          to: ${{ fromJson(secrets.TELEGRAM).chat_id }}
+          token: ${{ fromJson(secrets.TELEGRAM).token }}
           format: html
           disable_notification: true
           # The Upptime history page contains a <canvas>, and Telegram link unfurling is not able to show it.
