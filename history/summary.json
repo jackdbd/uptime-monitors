@@ -5,16 +5,16 @@
     "icon": "https://icons.duckduckgo.com/ip3/www.giacomodebidda.com.ico",
     "slug": "giacomo-debidda",
     "status": "up",
-    "uptime": "38.75%",
+    "uptime": "38.80%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "34.52%",
+    "uptimeYear": "34.79%",
     "time": 149,
-    "timeDay": 342,
-    "timeWeek": 250,
-    "timeMonth": 196,
-    "timeYear": 151,
+    "timeDay": 140,
+    "timeWeek": 225,
+    "timeMonth": 193,
+    "timeYear": 152,
     "dailyMinutesDown": {
       "2026-05-06": 61,
       "2026-05-05": 1440,
@@ -253,8 +253,7 @@
       "2025-09-14": 1440,
       "2025-09-13": 1440,
       "2025-09-12": 1440,
-      "2025-09-11": 1440,
-      "2025-09-10": 1440
+      "2025-09-11": 1440
     }
   }
 ]
